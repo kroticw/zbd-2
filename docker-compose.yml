@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./storage/postgresql:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+  mysql:
+    image: mysql/mysql-server:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: "mysql"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ROOT_HOST: "%"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./storage/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
